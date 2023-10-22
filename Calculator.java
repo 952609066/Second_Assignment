@@ -22,7 +22,7 @@ public class Calculator extends JFrame implements ActionListener{
 	
 	//Central component:
 	private JPanel jp_centre = new JPanel();
-	String content = "";
+	String equation = "";
 	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";  
     static final String DB_URL = "jdbc:mysql://localhost:3306/dbtest1?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";//This is the database where it contains the wanted table
    // The USER ID and PASSPORT:
@@ -58,7 +58,7 @@ public class Calculator extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				input_text.setText("");
-				content = "";
+				equation = "";
 			}
 		});
 		this.add(jp_north,BorderLayout.NORTH);
@@ -103,18 +103,18 @@ public class Calculator extends JFrame implements ActionListener{
 			this.input_text.setText(input_text.getText() + clickStr);
 			this.input_text.setHorizontalAlignment(JTextField.RIGHT);
 			//Record the input into a string.
-			content+=clickStr;
+			equation+=clickStr;
 		}else if(clickStr.matches("[\\+\\-\\*\\/\\^\\%]")||clickStr.matches("log")|| clickStr.matches("sin") || clickStr.matches("cos") || clickStr.matches("tan")) {
 			//if click the operator.
 			operator = clickStr;
 			preInput = this.input_text.getText();
 			this.input_text.setText("");
 			//Record the operator into the string.
-			content+=clickStr;
+			equation+=clickStr;
 		}
 		else if(clickStr.equals("=")) {
 			//if the clicked button is "=";
-			content += clickStr;
+			equation += clickStr;
 			 Double preValue = 0.0;
 	         Double latValue = 0.0;
 	            if (preInput.matches("-?\\d+(\\.\\d+)?")){
@@ -174,7 +174,7 @@ public class Calculator extends JFrame implements ActionListener{
                  	result = TANresult.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
                  	break;
 					}
-			content += result;
+			equation += result;
 			
 			//Display the result into the given column.
 			if(flag)
@@ -186,7 +186,7 @@ public class Calculator extends JFrame implements ActionListener{
 			 try {
 	                Class.forName(JDBC_DRIVER);
 	                Connection conn = DriverManager.getConnection(DB_URL,USER, PASS);    //construct the connection to MySQL database
-	                String histContent = "'" + content + "'";           //storing the previous operation
+	                String histContent = "'" + equation + "'";           //storing the previous operation
 	                int countNum = 1;
 	                String mySql = "";                              //initialize the MySql sentence
 	                Statement statement = conn.createStatement();
